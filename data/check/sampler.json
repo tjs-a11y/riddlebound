@@ -1,0 +1,29 @@
+{
+ "book": "sampler",
+ "answers_url": "https://riddlebound.app/check/sampler",
+ "normalize": "uppercase, accents removed, keep A-Z 0-9",
+ "hash": "sha256(salt + ':' + normalized answer), hex",
+ "codes": {
+  "ch1-walt": {
+   "salt": "long-light-sampler-1-the-overnight-desk:ch1-walt",
+   "hashes": [
+    "4afcfed26c3d5dc01d1406be5237ab049bf251c0b9600032d6dc404765ec4603"
+   ],
+   "title": "Walt's nine numbers",
+   "chapter": "Chapter 1 \u00b7 Rosa",
+   "url": "https://riddlebound.app/check/sampler/ch1-walt",
+   "hints": 3
+  },
+  "ch2-log": {
+   "salt": "long-light-sampler-1-the-overnight-desk:ch2-log",
+   "hashes": [
+    "b52e106f11bebaf30ecb0844e357f904cfd57eb2c0800451a7c1eea36a469a2f"
+   ],
+   "title": "Rosa's overnight log",
+   "chapter": "Chapter 2 \u00b7 Rosa",
+   "url": "https://riddlebound.app/check/sampler/ch2-log",
+   "hints": 3
+  }
+ },
+ "title": "The Overnight Desk (sampler)"
+}

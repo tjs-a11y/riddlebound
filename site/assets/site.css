@@ -1,0 +1,18 @@
+:root{--bg:#0f1012;--panel:#17181c;--line:#2a2b31;--fg:#ece6d9;--dim:#a19a8c;--amber:#f2a33a;--ok:#7fc79a;--red:#e8705a;color-scheme:dark}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.6 Inter,system-ui,-apple-system,"Segoe UI",sans-serif}
+a{color:var(--amber)}
+.wrap{max-width:1040px;margin:0 auto;padding-inline:20px}
+.mono{font-family:"IBM Plex Mono",ui-monospace,Menlo,monospace}
+.serif{font-family:Literata,Georgia,serif}
+header.bar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-block:18px;border-bottom:1px solid var(--line)}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--fg)}
+.logo svg{flex:none}
+.logo b{font:600 14px "IBM Plex Mono",monospace;letter-spacing:.18em;text-transform:uppercase}
+.btn{display:inline-block;background:var(--amber);color:#1a1206;text-decoration:none;font-weight:600;border-radius:999px;padding:11px 20px;border:0;cursor:pointer;font-size:15px}
+.btn.ghost{background:none;color:var(--fg);border:1px solid var(--line)}
+.kicker{font:600 12px "IBM Plex Mono",monospace;letter-spacing:.2em;text-transform:uppercase;color:var(--amber)}
+h1,h2,h3{text-wrap:balance;line-height:1.15}
+footer{border-top:1px solid var(--line);margin-top:72px;padding-block:28px;color:var(--dim);font-size:14px}
+footer .wrap{display:flex;flex-wrap:wrap;gap:12px 28px;justify-content:space-between}

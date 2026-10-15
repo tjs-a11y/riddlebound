@@ -1,0 +1,35 @@
+name: Publish site
+on:
+  push: { branches: [main] }
+  workflow_dispatch:
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+concurrency: { group: pages, cancel-in-progress: false }
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: python3 build.py
+      - uses: actions/upload-pages-artifact@v3
+        with: { path: _site }
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment: { name: github-pages, url: '${{ steps.d.outputs.page_url }}' }
+    steps:
+      - id: d
+        uses: actions/deploy-pages@v4
+  verify:
+    needs: deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check the live site
+        run: |
+          sleep 30
+          for u in https://riddlebound.app/ https://riddlebound.app/check/ https://riddlebound.app/check/sampler/ch1-walt/ http://riddlebound.io/check/sampler/ch1-walt/ https://tjs-a11y.github.io/riddlebound/; do
+            curl -sS -L -o /dev/null -m 20 -w "$u -> %{http_code} %{url_effective}\n" "$u" || echo "$u -> failed"
+          done
+          dig +short riddlebound.app A; dig +short www.riddlebound.app CNAME

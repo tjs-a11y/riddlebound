@@ -1,0 +1,13 @@
+.card-wrap{padding-block:56px 20px}
+.card{max-width:620px;margin:0 auto;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:28px}
+.card h1{font-family:Literata,Georgia,serif;font-weight:600;font-size:clamp(28px,5vw,38px);margin:8px 0 8px}
+.card .sub{color:var(--dim);margin:0 0 20px}
+.card form{display:flex;gap:8px;flex-wrap:wrap}
+.card input{flex:1;min-width:0;width:100%;background:var(--bg);border:1px solid var(--line);color:var(--fg);border-radius:10px;padding:12px 14px;font:600 17px "IBM Plex Mono",monospace;letter-spacing:.1em}
+.card form .btn{flex:none}
+.msg{min-height:1.4em;margin-top:10px;font-size:15px}
+.msg.no{color:var(--red)} .msg.ok{color:var(--ok)}
+.win{margin-top:14px;border:1px solid var(--ok);border-radius:10px;padding:16px;color:var(--fg)}
+.win b{color:var(--ok)}
+.win p{margin:8px 0 0;color:var(--dim)}
+.fine{color:var(--dim);font-size:13px;margin:22px 0 0}
