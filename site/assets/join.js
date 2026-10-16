@@ -1,6 +1,6 @@
 // /join/: pick a plan → (sign in by email if needed) → Stripe Checkout.
 (async function () {
-  const { ready, $, say, session, api, signInForm } = window.RB;
+  const { ready, $, say, session, api, signInForm, resume } = window.RB;
   const msg = $("msg");
   if (new URLSearchParams(location.search).get("canceled")) $("canceled").hidden = false;
   if (!ready) { $("closed").hidden = false; document.querySelectorAll("[data-plan]").forEach((b) => (b.disabled = true)); return; }
@@ -27,6 +27,14 @@
     say(msg, data.message || "Something went wrong. Please try again.", "no");
   }
   document.querySelectorAll("[data-plan]").forEach((b) => (b.onclick = () => go(b.dataset.plan)));
-  signInForm(() => { if (wanted === "month" || wanted === "year") go(wanted); });
+  if (await resume()) return;
+  signInForm(() => { showWho(); if (wanted === "month" || wanted === "year") go(wanted); });
+  async function showWho() {
+    const s = await session();
+    $("who").hidden = !s;
+    if (s) $("who").textContent = "Signed in as " + (s.user.email || "a member") + ". Pick a plan to go to checkout.";
+  }
+  await showWho();
+  if ($("signin-msg").textContent) $("out").hidden = false; // show why a link failed
   if ((await session()) && (wanted === "month" || wanted === "year")) go(wanted);
 })();

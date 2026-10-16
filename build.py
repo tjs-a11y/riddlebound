@@ -75,6 +75,7 @@ def join_page():
 <div class="plan"><div class="kicker">Yearly</div><div class="price">$39.99<span>/year</span></div><p>About $3.33 a month.</p><button class="btn ghost" data-plan="year">Join yearly</button></div>
 </div>
 <div id="msg" class="msg" aria-live="polite"></div>
+<p class="fine" id="who" hidden></p>
 """ + SIGNIN.format(lead="First, sign in with your email. We'll send you a link, no password needed.") + """
 <p class="fine">Payments by Stripe. Cancel anytime from <a href="/account/">your account</a>. Prices in US dollars; many countries see their own currency at checkout.</p></div>"""
     return member_page("join", "Join · Riddlebound", body)

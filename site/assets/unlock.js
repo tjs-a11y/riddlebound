@@ -1,7 +1,7 @@
 // /unlock/: a signed-in reader types a code heard in the show → the API checks it → a short-lived file link.
 // /unlock/?code=GHOST-ZERO pre-fills the box (and survives the emailed sign-in link).
 (async function () {
-  const { ready, $, say, session, api, signInForm } = window.RB;
+  const { ready, $, say, session, api, signInForm, resume } = window.RB;
   const msg = $("msg");
   const pre = (new URLSearchParams(location.search).get("code") || "").slice(0, 40);
   if (!ready) { $("closed").hidden = false; return; }
@@ -44,6 +44,7 @@
     say(msg, data.message || "Something went wrong. Please try again.", "no");
   };
 
+  if (await resume()) return;
   signInForm(show);
   show();
 })();

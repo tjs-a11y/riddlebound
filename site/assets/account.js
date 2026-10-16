@@ -1,7 +1,7 @@
 // /account/: membership status, Stripe Customer Portal (card, plan, cancel), sign out.
 // After checkout (?welcome=1) it re-checks a few times, because the webhook can land a moment later.
 (async function () {
-  const { ready, $, say, session, api, signInForm, signOut } = window.RB;
+  const { ready, $, say, session, api, signInForm, resume, signOut } = window.RB;
   const welcome = !!new URLSearchParams(location.search).get("welcome");
   if (welcome) $("welcome").hidden = false;
   if (!ready) { $("closed").hidden = false; return; }
@@ -35,6 +35,7 @@
   };
   $("out-btn").onclick = (e) => { e.preventDefault(); signOut(); };
 
+  if (await resume()) return;
   signInForm(() => load(welcome ? 5 : 0));
   load(welcome ? 5 : 0);
 })();
