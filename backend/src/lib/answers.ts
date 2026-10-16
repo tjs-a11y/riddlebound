@@ -27,3 +27,10 @@ export function sameHash(a: string, b: string): boolean {
   if (!/^[0-9a-f]{64}$/.test(a) || !/^[0-9a-f]{64}$/.test(b)) return false;
   return timingSafeEqual(Buffer.from(a, "hex"), Buffer.from(b, "hex"));
 }
+
+// Redeemable codes (0002): one hash per code, not bound to a puzzle, so the server can look a
+// typed code up directly. Same pepper and normalization as answers ("GHOST-ZERO" = "ghost zero").
+export function hashCode(pepper: string, code: string): string {
+  if (pepper.length < 32) throw new Error("RIDDLEBOUND_ANSWER_PEPPER must be at least 32 characters");
+  return createHmac("sha256", pepper).update(`code:${normalizeAnswer(code)}`).digest("hex");
+}

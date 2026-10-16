@@ -56,3 +56,25 @@ Webhook events to enable:
    - insert the row into `book_assets`, with `encrypted_content_url` = `riddlebound-assets/<path>`;
    - upload the file to that private bucket.
 4. **Checks:** `npm test` (24 tests), `npm run typecheck`, `npm run build`.
+
+## Redeemable codes (`POST /api/codes/redeem`)
+
+For codes a viewer hears or sees outside a book, such as the code read at the end of a video.
+Body `{ "code": "GHOST-ZERO" }`, header `Authorization: Bearer <Supabase access token>`.
+
+| Situation | Answer |
+|---|---|
+| Logged out | 401 `unauthenticated` + `joinUrl` |
+| 6th try in a minute (per IP or per user) | 429 + `Retry-After` |
+| Unknown or switched-off code | 404 `unknown_code` |
+| Right code, no active membership or purchase of that book | 403 `no_access`, `requiresSubscription: true`, `joinUrl` |
+| Right code, member | 200 + a signed link to the file (5 minutes), unlock recorded once |
+
+Codes are stored only as keyed hashes (`redeem_codes`, migration 0002), and each one must point at a
+`book_assets` row, so a code can't go live before its file is uploaded. To add one:
+
+1. Upload the file to the private `riddlebound-assets` bucket and add its `book_assets` row.
+2. `RIDDLEBOUND_ANSWER_PEPPER=... node scripts/add-code.mjs GHOST-ZERO ghost-freight dossier-001`
+3. Paste the printed SQL into Supabase → SQL Editor.
+
+`RIDDLEBOUND_JOIN_URL` (default `https://riddlebound.app/join/`) is the link sent with 401 and 403 answers.

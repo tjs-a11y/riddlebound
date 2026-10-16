@@ -5,8 +5,8 @@ export function jsonOk(body: Record<string, unknown>, status = 200): Response {
   return Response.json({ ok: true, ...body }, { status, headers: { "Cache-Control": "no-store" } });
 }
 
-export function jsonError(status: number, error: string, message: string, headers: Record<string, string> = {}): Response {
-  return Response.json({ ok: false, error, message }, { status, headers: { "Cache-Control": "no-store", ...headers } });
+export function jsonError(status: number, error: string, message: string, headers: Record<string, string> = {}, extra: Record<string, unknown> = {}): Response {
+  return Response.json({ ok: false, error, message, ...extra }, { status, headers: { "Cache-Control": "no-store", ...headers } });
 }
 
 export const requestId = (): string => randomUUID();
