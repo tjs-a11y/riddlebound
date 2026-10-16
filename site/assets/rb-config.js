@@ -3,6 +3,6 @@
 // "joining opens soon" instead of the sign-in form.
 window.RB_CONFIG = {
   api: "https://riddlebound.vercel.app",
-  supabaseUrl: "",
-  supabaseKey: "", // the "publishable" key (sb_publishable_...), or the legacy anon key
+  supabaseUrl: "https://sjmhrcoaccztcbffirll.supabase.co",
+  supabaseKey: "sb_publishable_s5U4oYCKmL7BP5bysi1WCw_nmMdD9pP", // the "publishable" key (sb_publishable_...), or the legacy anon key
 };
