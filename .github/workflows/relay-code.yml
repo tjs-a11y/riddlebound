@@ -1,0 +1,59 @@
+name: Wire a Riddlebound code
+# Prints the SQL to make one dossier + unlock code live. Run it from the Actions tab.
+# It uses the RIDDLEBOUND_ANSWER_PEPPER repo secret to compute the keyed hashes; it never
+# prints the pepper itself. Copy the SQL from the run summary into Supabase → SQL Editor.
+on:
+  workflow_dispatch:
+    inputs:
+      code:
+        description: The code readers type (e.g. RELAY-309)
+        required: true
+      book_id:
+        description: Book id, lowercase a-z 0-9 dashes (e.g. signal-309)
+        required: true
+      asset_id:
+        description: Asset id (e.g. relay-file-01)
+        required: true
+      content_path:
+        description: Path of the uploaded file inside the private bucket (e.g. riddlebound-assets/signal-309/relay-file-01.html)
+        required: true
+      answer:
+        description: The in-dossier puzzle answer (spaces/caps ignored; e.g. DRIFT)
+        required: true
+permissions:
+  contents: read
+jobs:
+  sql:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build the SQL
+        working-directory: backend
+        env:
+          RIDDLEBOUND_ANSWER_PEPPER: ${{ secrets.RIDDLEBOUND_ANSWER_PEPPER }}
+          CODE: ${{ inputs.code }}
+          BOOK: ${{ inputs.book_id }}
+          ASSET: ${{ inputs.asset_id }}
+          CPATH: ${{ inputs.content_path }}
+          ANSWER: ${{ inputs.answer }}
+        run: |
+          if [ -z "${RIDDLEBOUND_ANSWER_PEPPER:-}" ]; then
+            echo "::error::Add the repo secret RIDDLEBOUND_ANSWER_PEPPER (same value as in Vercel) first: Settings → Secrets and variables → Actions."
+            exit 1
+          fi
+          HA=$(node scripts/hash-answer.mjs "$BOOK" "$ASSET" "$ANSWER")
+          CODESQL=$(node scripts/add-code.mjs "$CODE" "$BOOK" "$ASSET")
+          {
+            echo '## Paste this into Supabase → SQL Editor (riddlebound project)'
+            echo
+            echo '```sql'
+            echo "-- 1) the dossier (points at your uploaded file; re-running just updates the path)"
+            echo "insert into public.book_assets (book_id, asset_id, hashed_answer, encrypted_content_url)"
+            echo "values ('$BOOK', '$ASSET', '$HA', '$CPATH')"
+            echo "on conflict (book_id, asset_id) do update set hashed_answer = excluded.hashed_answer, encrypted_content_url = excluded.encrypted_content_url;"
+            echo
+            echo "-- 2) the code readers type"
+            echo "$CODESQL"
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+          echo "Done. Open this run's Summary for the SQL."
