@@ -1,0 +1,27 @@
+{
+  "name": "riddlebound-backend",
+  "private": true,
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit",
+    "hash-answer": "node scripts/hash-answer.mjs"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.117.2",
+    "next": "16.3.7",
+    "react": "19.2.8",
+    "react-dom": "19.2.8",
+    "server-only": "^0.0.1",
+    "stripe": "^22.6.2"
+  },
+  "devDependencies": {
+    "@types/node": "^22.20.4",
+    "@types/react": "^19",
+    "typescript": "^5",
+    "vitest": "^5.0.2"
+  }
+}
