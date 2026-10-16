@@ -14,11 +14,11 @@ export function adminClient(): SupabaseClient | null {
 
 // The signed-in reader, from the Supabase access token in "Authorization: Bearer ...".
 // The token is verified by Supabase Auth; the user id is never taken from the request body.
-export async function userFromRequest(request: Request, client: SupabaseClient): Promise<{ id: string } | null> {
+export async function userFromRequest(request: Request, client: SupabaseClient): Promise<{ id: string; email: string | null } | null> {
   const header = request.headers.get("authorization") ?? "";
   const match = /^Bearer ([A-Za-z0-9._-]{20,4096})$/.exec(header);
   if (!match) return null;
   const { data, error } = await client.auth.getUser(match[1]);
   if (error || !data?.user?.id) return null;
-  return { id: data.user.id };
+  return { id: data.user.id, email: data.user.email ?? null };
 }

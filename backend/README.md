@@ -5,6 +5,9 @@ A Next.js 16 API-only app. The public site stays static on GitHub Pages (`../sit
 | Method | Path | Auth | What it does |
 |---|---|---|---|
 | POST | `/api/books/unlock` | `Authorization: Bearer <Supabase access token>` | Body `{ bookId, assetId, submittedAnswer, userId? }`. Returns `{ ok, unlocked, firstTime, contentUrl, expiresInSeconds }` |
+| POST | `/api/checkout` | Signed-in reader | `{plan: "month"|"year"|"book", bookId?}` → Stripe Checkout address |
+| GET | `/api/me` | Signed-in reader | Membership (and until when), owned books |
+| POST | `/api/billing/portal` | Signed-in reader | Stripe Customer Portal address (card, plan, cancel) |
 | POST | `/api/webhooks/stripe` | Stripe signature | Grants, renews and revokes memberships and single-book purchases |
 
 **Unlock answers**
@@ -35,8 +38,8 @@ A Next.js 16 API-only app. The public site stays static on GitHub Pages (`../sit
   - Only objects with `metadata.product = "riddlebound"` are acted on, because the Stripe account also bills other products.
   - A subscription that arrives before its checkout links the customer returns 500, so Stripe retries until the link exists.
 
-## Stripe checkout requirements
-When creating Riddlebound checkouts (not built yet), set:
+## Stripe checkout
+`/api/checkout` (src/lib/checkout.ts) does all of this; prices are found by lookup key (`riddlebound__member__month`, `riddlebound__member__year`, `riddlebound__book__once`). The member's Stripe customer is created and linked before checkout, so subscription events never arrive for an unknown customer. Every checkout sets:
 - `client_reference_id` = the member's Supabase user id;
 - `metadata.product = "riddlebound"`, and also `subscription_data.metadata.product = "riddlebound"` for memberships;
 - for a single book: `mode = "payment"`, `metadata.purchase_type = "single_book"`, `metadata.book_id = "<book-id>"`.
@@ -55,7 +58,7 @@ Webhook events to enable:
    - `RIDDLEBOUND_ANSWER_PEPPER=... npm run hash-answer -- <book-id> <asset-id> "<answer>"`;
    - insert the row into `book_assets`, with `encrypted_content_url` = `riddlebound-assets/<path>`;
    - upload the file to that private bucket.
-4. **Checks:** `npm test` (24 tests), `npm run typecheck`, `npm run build`.
+4. **Checks:** `npm test`, `npm run typecheck`, `npm run build`.
 
 ## Redeemable codes (`POST /api/codes/redeem`)
 
@@ -78,3 +81,6 @@ Codes are stored only as keyed hashes (`redeem_codes`, migration 0002), and each
 3. Paste the printed SQL into Supabase → SQL Editor.
 
 `RIDDLEBOUND_JOIN_URL` (default `https://riddlebound.app/join/`) is the link sent with 401 and 403 answers.
+
+## Reader pages (on riddlebound.app)
+`/join/`, `/unlock/` and `/account/` are static pages built by `../build.py`. They sign readers in with an emailed link (Supabase Auth, in the browser) and call this API with the access token. They need the PUBLIC Supabase URL and publishable key in `../site/assets/rb-config.js`; until then they show "Joining opens soon". Calls are allowed only from the origins in `RIDDLEBOUND_SITE_ORIGINS` (CORS).

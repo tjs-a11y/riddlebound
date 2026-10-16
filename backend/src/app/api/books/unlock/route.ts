@@ -1,9 +1,12 @@
+import { preflight, withCors } from "@/lib/cors";
 import { adminClient, userFromRequest } from "@/lib/supabase";
 import { handleUnlock, type UnlockDeps } from "@/lib/unlock";
 
 // POST /api/books/unlock  { bookId, assetId, submittedAnswer, userId? }
 // Header: Authorization: Bearer <Supabase access token>. See src/lib/unlock.ts.
 export const dynamic = "force-dynamic";
+
+export const OPTIONS = (request: Request): Response => preflight(request);
 
 function deps(): UnlockDeps | null {
   const db = adminClient();
@@ -46,5 +49,5 @@ function deps(): UnlockDeps | null {
 }
 
 export async function POST(request: Request): Promise<Response> {
-  return handleUnlock(request, deps());
+  return withCors(request, await handleUnlock(request, deps()));
 }

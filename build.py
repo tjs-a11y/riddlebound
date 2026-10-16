@@ -53,6 +53,55 @@ def index_page(n):
     return HEAD.format(title="Check an answer · Riddlebound", robots="index") + body + FOOT.format(script=script)
 
 
+SUPABASE_JS = ('<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.118.0/dist/umd/supabase.js" '
+               'integrity="sha384-TcHRA3zBbn+Lexh5n+Oil4guNPOS3rjNDpGRAN46u/s/mB2IZ50ceC6TYDU2yvgK" crossorigin="anonymous"></script>')
+SIGNIN = """<div id="out" hidden><p class="sub">{lead}</p>
+<form id="signin" autocomplete="on" novalidate><input id="email" type="email" aria-label="Email" placeholder="you@example.com" autocomplete="email" class="plain"><button class="btn">Email me a link</button></form>
+<div id="signin-msg" class="msg" aria-live="polite"></div></div>
+<div id="closed" class="msg" hidden>Joining opens soon.</div>"""
+
+
+def member_page(name, title, body):
+    script = SUPABASE_JS + '<script src="/assets/rb-config.js"></script><script src="/assets/rb.js"></script>' + f'<script src="/assets/{name}.js"></script>'
+    return HEAD.format(title=title, robots="noindex") + body + FOOT.format(script=script)
+
+
+def join_page():
+    body = """<div class="card"><div class="kicker">Membership</div><h1>Every case file. Every book.</h1>
+<p class="sub">Riddlebound members open every puzzle dossier and interactive book. The codes are hidden in the books and the show.</p>
+<div id="canceled" class="msg" hidden>Checkout canceled. You weren't charged.</div>
+<div class="plans">
+<div class="plan"><div class="kicker">Founding member</div><div class="price">$4.99<span>/month</span></div><p>Locked in for as long as you stay a member.</p><button class="btn" data-plan="month">Join monthly</button></div>
+<div class="plan"><div class="kicker">Yearly</div><div class="price">$39.99<span>/year</span></div><p>About $3.33 a month.</p><button class="btn ghost" data-plan="year">Join yearly</button></div>
+</div>
+<div id="msg" class="msg" aria-live="polite"></div>
+""" + SIGNIN.format(lead="First, sign in with your email. We'll send you a link, no password needed.") + """
+<p class="fine">Payments by Stripe. Cancel anytime from <a href="/account/">your account</a>. Prices in US dollars; many countries see their own currency at checkout.</p></div>"""
+    return member_page("join", "Join · Riddlebound", body)
+
+
+def unlock_page():
+    body = """<div class="card"><div class="kicker">Enter a code</div><h1>Heard a code?</h1>
+<p class="sub">Codes are read at the end of the show and printed in the books, like <span class="mono" style="white-space:nowrap">GHOST-ZERO</span>.</p>
+""" + SIGNIN.format(lead="Sign in first. Codes open files for members.") + """
+<form id="f" autocomplete="off" hidden><input id="c" aria-label="Code" placeholder="CODE" maxlength="40" autocapitalize="characters" spellcheck="false"><button class="btn">Open</button></form>
+<div id="msg" class="msg" aria-live="polite"></div>
+<div id="win" class="win" hidden><b>Unlocked.</b> <span id="win-t"></span> <p><a id="file" class="btn" href="#" target="_blank" rel="noopener">Open the file</a></p><p>The link works for a few minutes. Enter the code again any time for a fresh one.</p></div>
+<p class="fine" id="who" hidden></p></div>"""
+    return member_page("unlock", "Enter a code · Riddlebound", body)
+
+
+def account_page():
+    body = """<div class="card"><div class="kicker">Your account</div><h1 id="h">Your Riddlebound</h1>
+<div id="welcome" class="win" hidden><b>Welcome in.</b> Your membership can take a few seconds to show up here.</div>
+""" + SIGNIN.format(lead="Sign in to see your membership.") + """
+<div id="in" hidden><p class="sub" id="status"></p>
+<p class="acts"><a class="btn" href="/unlock/">Enter a code</a> <button id="manage" class="btn ghost" hidden>Manage membership</button> <a id="join" class="btn ghost" href="/join/" hidden>Become a member</a></p>
+<div id="msg" class="msg" aria-live="polite"></div>
+<p class="fine"><span id="who"></span> · <a href="#" id="out-btn">Sign out</a></p></div></div>"""
+    return member_page("account", "Account · Riddlebound", body)
+
+
 def not_found():
     body = """<div class="card"><div class="kicker">Static on the line</div><h1>Nothing on this frequency.</h1>
 <p class="sub">That page doesn't exist. If you typed a code address from a book, check the spelling, or <a href="/check/">enter it here</a>.</p><p><a class="btn" href="/">Back to Riddlebound</a></p></div>"""
@@ -80,6 +129,9 @@ def main():
     os.makedirs(os.path.join(OUT, "check"), exist_ok=True)
     open(os.path.join(OUT, "check", "index.html"), "w", encoding="utf-8").write(index_page(count))
     open(os.path.join(OUT, "404.html"), "w", encoding="utf-8").write(not_found())
+    for name, page in (("join", join_page), ("unlock", unlock_page), ("account", account_page)):
+        os.makedirs(os.path.join(OUT, name), exist_ok=True)
+        open(os.path.join(OUT, name, "index.html"), "w", encoding="utf-8").write(page())
     open(os.path.join(OUT, "CNAME"), "w").write("riddlebound.app\n")
     for dp, _, fs in os.walk(OUT):
         for f in fs:

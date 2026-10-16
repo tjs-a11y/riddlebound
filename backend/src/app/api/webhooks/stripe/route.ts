@@ -1,5 +1,6 @@
-import Stripe from "stripe";
+import type Stripe from "stripe";
 import { adminClient } from "@/lib/supabase";
+import { stripeClient } from "@/lib/stripe";
 import { jsonError, log } from "@/lib/http";
 import { syncEvent, type SyncDb } from "@/lib/stripe-sync";
 
@@ -7,14 +8,6 @@ import { syncEvent, type SyncDb } from "@/lib/stripe-sync";
 // every request's signature is checked against STRIPE_WEBHOOK_SECRET using
 // the RAW body (parsing it first would break the signature).
 export const dynamic = "force-dynamic";
-
-let stripe: Stripe | null = null;
-function stripeClient(): Stripe | null {
-  if (stripe) return stripe;
-  const key = process.env.STRIPE_SECRET_KEY;
-  stripe = key ? new Stripe(key, { appInfo: { name: "riddlebound-backend", version: "1.0.0" } }) : null;
-  return stripe;
-}
 
 export async function POST(request: Request): Promise<Response> {
   const client = stripeClient();

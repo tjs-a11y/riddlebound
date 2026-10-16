@@ -1,3 +1,4 @@
+[hidden]{display:none!important}
 .card-wrap{padding-block:56px 20px}
 .card{max-width:620px;margin:0 auto;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:28px}
 .card h1{font-family:Literata,Georgia,serif;font-weight:600;font-size:clamp(28px,5vw,38px);margin:8px 0 8px}
@@ -11,3 +12,12 @@
 .win b{color:var(--ok)}
 .win p{margin:8px 0 0;color:var(--dim)}
 .fine{color:var(--dim);font-size:13px;margin:22px 0 0}
+.card input.plain{font:16px Inter,system-ui,sans-serif;letter-spacing:0}
+.plans{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin:8px 0 4px}
+.plan{border:1px solid var(--line);border-radius:12px;padding:18px;display:flex;flex-direction:column;gap:6px}
+.plan p{margin:0 0 8px;color:var(--dim);font-size:14px}
+.plan .btn{margin-top:auto;align-self:flex-start}
+.price{font:600 30px Literata,Georgia,serif;font-variant-numeric:tabular-nums}
+.price span{font:400 15px Inter,system-ui,sans-serif;color:var(--dim)}
+.acts{display:flex;flex-wrap:wrap;gap:8px}
+#out{margin-top:18px}

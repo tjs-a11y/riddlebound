@@ -1,8 +1,11 @@
+import { preflight, withCors } from "@/lib/cors";
 import { adminClient, userFromRequest } from "@/lib/supabase";
 import { handleRedeem, type RedeemDeps } from "@/lib/redeem";
 
 // POST /api/codes/redeem  { code }  Header: Authorization: Bearer <Supabase access token>. See src/lib/redeem.ts.
 export const dynamic = "force-dynamic";
+
+export const OPTIONS = (request: Request): Response => preflight(request);
 
 function deps(): RedeemDeps | null {
   const db = adminClient();
@@ -46,5 +49,5 @@ function deps(): RedeemDeps | null {
 }
 
 export async function POST(request: Request): Promise<Response> {
-  return handleRedeem(request, deps());
+  return withCors(request, await handleRedeem(request, deps()));
 }
