@@ -16,3 +16,12 @@ header.bar{display:flex;align-items:center;justify-content:space-between;gap:12p
 h1,h2,h3{text-wrap:balance;line-height:1.15}
 footer{border-top:1px solid var(--line);margin-top:72px;padding-block:28px;color:var(--dim);font-size:14px}
 footer .wrap{display:flex;flex-wrap:wrap;gap:12px 28px;justify-content:space-between}
+.nav{display:flex;align-items:center;gap:6px}
+.nav .link{color:var(--fg);text-decoration:none;font-weight:600;font-size:15px;padding:10px 12px}
+.tiers{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px}
+.tier{border:1px solid var(--line);border-radius:14px;padding:20px;min-width:0}
+.tier.member{border-color:var(--amber)}
+.tier b{font:600 13px "IBM Plex Mono",monospace;letter-spacing:.14em;text-transform:uppercase;color:var(--amber)}
+.tier ul{margin:12px 0 0;padding-left:18px;color:var(--dim)}
+.tier li{margin:6px 0}
+.tier .cta{margin-top:16px}

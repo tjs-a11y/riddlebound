@@ -23,7 +23,7 @@ HEAD = """<!doctype html><html lang="en"><head><meta charset="utf-8">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Literata:opsz,wght@7..72,600&family=IBM+Plex+Mono:wght@400;600&family=Inter:wght@400;600&display=swap">
 <link rel="stylesheet" href="/assets/site.css"><link rel="stylesheet" href="/assets/check.css"></head><body>
-<header class="wrap bar"><a class="logo" href="/"><img src="/assets/logo.svg" width="30" height="30" alt=""><b>Riddlebound</b></a><a class="btn ghost" href="/#listen">Hear the show</a></header>
+<header class="wrap bar"><a class="logo" href="/"><img src="/assets/logo.svg" width="30" height="30" alt=""><b>Riddlebound</b></a><nav class="nav"><a class="link" href="/account/">Sign in</a><a class="btn" href="/join/">Join</a></nav></header>
 <main class="wrap card-wrap">"""
 FOOT = """</main><footer><div class="wrap"><span>Riddlebound · Books from Long Light Press</span><span>© 2026 Long Light Press</span></div></footer>{script}</body></html>"""
 
