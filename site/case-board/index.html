@@ -109,21 +109,21 @@
     <div class="how">
       <div><span class="n">01</span><p>Each dispatch ends in numbers. The code is simple: <b>A=1, B=2, C=3…</b></p></div>
       <div><span class="n">02</span><p>Type what the numbers spell. Solve it and the dispatch opens its clue.</p></div>
-      <div><span class="n">03</span><p>Four words, four nights. Connect them — then read the last transmission.</p></div>
+      <div><span class="n">03</span><p>Seven words, seven nights. Connect them — then read the last transmission.</p></div>
     </div>
   </section>
 
-  <div class="prog" aria-label="Decode progress"><span class="lab" id="progLab">0 / 4 decoded</span><div class="track"><div class="fill" id="progFill"></div></div></div>
+  <div class="prog" aria-label="Decode progress"><span class="lab" id="progLab">0 / 7 decoded</span><div class="track"><div class="fill" id="progFill"></div></div></div>
 
   <main id="board"></main>
 
   <section class="final" id="final" aria-live="polite">
-    <div class="lockrow" id="lockRow"><span>🔒 Sealed transmission</span><span>·</span><span>decode all four dispatches to open</span></div>
+    <div class="lockrow" id="lockRow"><span>🔒 Sealed transmission</span><span>·</span><span>decode all seven dispatches to open</span></div>
     <div class="unlocked" id="finalOpen" hidden>
       <div class="eyebrow">Final transmission · intercepted</div>
       <h3>Stay on the line</h3>
       <p class="chain" id="chain"></p>
-      <p style="color:var(--dim);max-width:56ch;margin-inline:auto">Four nights, four words. The count is almost out. On <b>November&nbsp;24, at 3:09&nbsp;a.m.</b>, the Quiet asks its question — and it already knows your name. Someone in Calder Flats is building a transmitter to answer it. That is the one thing the Concord begged them never to do.</p>
+      <p style="color:var(--dim);max-width:56ch;margin-inline:auto">Seven nights, seven words. The count is almost out. On <b>November&nbsp;24, at 3:09&nbsp;a.m.</b>, the Quiet asks its question — and it already knows your name. Someone in Calder Flats is building a transmitter to answer it. That is the one thing the Concord begged them never to do.</p>
       <a class="cta" href="https://www.youtube.com/@hummingbird-s4w?sub_confirmation=1" target="_blank" rel="noopener">▶ Follow on the channel</a>
     </div>
   </section>
@@ -166,6 +166,27 @@
       nums:[18,5,20,21,18,14],
       clue:"The one thing the Concord begged them never to do. Decode it, and you know what’s coming on the twenty-fourth.",
       yt:"https://youtu.be/MokuHYvQUNg" },
+    { id:"d5", img:"/assets/case-board/5.webp", tag:"NIGHT FIVE · THE DRIFT",
+      title:"A different midnight",
+      summary:["The frequency doesn’t only carry 1690’s tomorrow. Some nights it carries other counts entirely — a ham operator in 1962, an engineer in a basement of servers counting down a different midnight.",
+               "Every one of them ends. The question is which midnight the Quiet means."],
+      nums:[13,9,4,14,9,7,8,20],
+      clue:"The count you can hear isn’t the only one running. One of them ends at ______ — and it was never set to your clock.",
+      yt:"https://youtu.be/8YRn7EpGpTk" },
+    { id:"d6", img:"/assets/case-board/6.webp", tag:"NIGHT SIX · THE CROSSING",
+      title:"The Tessaly Crossing",
+      summary:["Episode two is named for a crossing. There is a line the signal steps over — between the living and the read, between the town and the thing standing one step beside it.",
+               "Cross it going the wrong way and you don’t come back the same."],
+      nums:[2,15,18,4,5,18],
+      clue:"Decode where you cross. The Tessaly Crossing is a ______ — and something is waiting on the far side of it.",
+      yt:"https://youtu.be/LMY4-NFPNiM" },
+    { id:"d7", img:"/assets/case-board/7.webp", tag:"NIGHT SEVEN · THE CALL-BACK",
+      title:"The one thing they were begged not to do",
+      summary:["A light you carry so you can be found in the dark. Someone in Calder Flats is building one aimed the wrong way — out, toward the Quiet, to say we are here.",
+               "The Concord has one word for that. Don’t."],
+      nums:[12,1,14,20,5,18,14],
+      clue:"The last word on the board. A ______ is how you call back across the dark — and it’s the one thing they were begged never to do.",
+      yt:"https://youtu.be/4QpbfSX3UJY" },
   ];
   var answer = function(nums){ return nums.map(function(n){ return String.fromCharCode(64+n); }).join(""); };
   var clean = function(s){ return (s||"").toUpperCase().replace(/[^A-Z]/g,""); };
